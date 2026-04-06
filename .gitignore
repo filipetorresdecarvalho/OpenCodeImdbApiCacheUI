@@ -205,3 +205,12 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# IMDB Cache App specific
+cache/
+logs/
+*.db
+*.sqlite
+*.sqlite3
+.env.local
+.env.production

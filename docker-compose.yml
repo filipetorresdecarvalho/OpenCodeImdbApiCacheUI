@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mariadb:11
+    container_name: imdb-cache-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-imdb_cache}
+      MYSQL_USER: ${DB_USER:-imdb_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-rootpassword}
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  app:
+    build: .
+    container_name: imdb-cache-app
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-imdb_user}
+      DB_PASSWORD: ${DB_PASSWORD:-rootpassword}
+      DB_NAME: ${DB_NAME:-imdb_cache}
+      IMDB_API_KEY: ${IMDB_API_KEY:-}
+      CACHE_TTL_SECONDS: 3600
+      STORAGE_STRATEGY: hybrid
+      LOG_LEVEL: INFO
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./cache:/app/cache
+      - ./logs:/app/logs
+
+volumes:
+  mysql_data:

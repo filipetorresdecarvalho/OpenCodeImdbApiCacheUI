@@ -1,0 +1,94 @@
+{
+  "endpoints": {
+    "titles_detail": {
+      "path": "/titles/{id}",
+      "table_name": "imdb_titles_detail",
+      "cache_response": true,
+      "cache_images": true,
+      "ttl_override": null,
+      "schema_hints": {
+        "id": "VARCHAR(20)",
+        "title": "VARCHAR(500)",
+        "year": "INT",
+        "image": "VARCHAR(1000)",
+        "releaseDate": "VARCHAR(50)",
+        "runtimeMins": "INT",
+        "genres": "JSON",
+        "directors": "JSON",
+        "stars": "JSON",
+        "imDbRating": "DECIMAL(3,1)",
+        "plot": "TEXT"
+      }
+    },
+    "titles_rating": {
+      "path": "/titles/{id}/ratings",
+      "table_name": "imdb_titles_rating",
+      "cache_response": true,
+      "cache_images": false,
+      "ttl_override": 1800,
+      "schema_hints": {
+        "id": "VARCHAR(20)",
+        "title": "VARCHAR(500)",
+        "imDb": "DECIMAL(3,1)",
+        "metacritic": "DECIMAL(3,1)",
+        "theMovieDb": "DECIMAL(3,1)",
+        "rottenTomatoes": "DECIMAL(3,1)"
+      }
+    },
+    "names_filmography": {
+      "path": "/names/{id}/filmography",
+      "table_name": "imdb_names_filmog",
+      "cache_response": true,
+      "cache_images": true,
+      "ttl_override": null,
+      "schema_hints": {
+        "id": "VARCHAR(20)",
+        "name": "VARCHAR(500)",
+        "jobs": "JSON"
+      }
+    },
+    "names_detail": {
+      "path": "/names/{id}",
+      "table_name": "imdb_names_detail",
+      "cache_response": true,
+      "cache_images": true,
+      "ttl_override": null,
+      "schema_hints": {
+        "id": "VARCHAR(20)",
+        "name": "VARCHAR(500)",
+        "image": "VARCHAR(1000)",
+        "birthDate": "VARCHAR(50)",
+        "birthPlace": "VARCHAR(500)",
+        "deathDate": "VARCHAR(50)",
+        "heightCm": "INT",
+        "awards": "JSON"
+      }
+    },
+    "search_title": {
+      "path": "/search/title/{query}",
+      "table_name": "imdb_search_title",
+      "cache_response": true,
+      "cache_images": true,
+      "ttl_override": 7200,
+      "schema_hints": {
+        "searchType": "VARCHAR(50)",
+        "expression": "VARCHAR(500)",
+        "results": "JSON",
+        "errorMessage": "VARCHAR(500)"
+      }
+    },
+    "search_name": {
+      "path": "/search/name/{query}",
+      "table_name": "imdb_search_name",
+      "cache_response": true,
+      "cache_images": true,
+      "ttl_override": 7200,
+      "schema_hints": {
+        "searchType": "VARCHAR(50)",
+        "expression": "VARCHAR(500)",
+        "results": "JSON",
+        "errorMessage": "VARCHAR(500)"
+      }
+    }
+  }
+}
